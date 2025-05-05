@@ -1,5 +1,11 @@
 <?php
-require_once '../webdev/mysqli_connect2.php';
+$db_conn = mysqli_connect(
+    getenv('DB_HOST'),
+    getenv('DB_USER'),
+    getenv('DB_PASS'),
+    getenv('DB_NAME')
+);
+
 $query = 'SELECT concatNames(p.PLayerFName,p.PlayerLName) as Name
 FROM PLAYER p
 WHERE p.TeamName = "Hawks"';

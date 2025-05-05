@@ -1,7 +1,11 @@
+<?php
+$db_conn = mysqli_connect(
+    getenv('DB_HOST'),
+    getenv('DB_USER'),
+    getenv('DB_PASS'),
+    getenv('DB_NAME')
+);
 
-
-    <?php
-require_once '../webdev/mysqli_connect2.php';
 $query = 'SELECT 
 College,
 SUM(Points) as Points

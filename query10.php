@@ -1,5 +1,11 @@
 <?php
-require_once '../webdev/mysqli_connect2.php';
+$db_conn = mysqli_connect(
+    getenv('DB_HOST'),
+    getenv('DB_USER'),
+    getenv('DB_PASS'),
+    getenv('DB_NAME')
+);
+
 $query1 = 'SELECT p.PlayerID, p.TeamName
             From PLAYER p
             WHERE p.PlayerID = 1';
