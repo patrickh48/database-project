@@ -1,22 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>NBA</title>
-	<meta charset ="utf-8"> 
+    <meta charset="UTF-8">
+    <title>NBA Stats Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            margin-top: 60px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0077cc;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+    </style>
 </head>
 <body>
-    <h1>NBA Stats Front End</h1>
-    <ol>
-        <li><a href='query1.php'>Players with the highest average score</a></li>
-        <li><a href='query2.php'>All players on the Lakers</a></li>
-        <li><a href='query3.php'>All players that went to the same college</a></li>
-        <li><a href='query4.php'>All players who did not go to college</a></li>
-        <li><a href='query5.php'>Teams ranked by total average score</a></li>
-        <li><a href='query6.php'>Top Colleges by points</a></li>
-        <li><a href='query7.php'>Rebounds per position</a></li>
-        <li><a href='query8.php'>Players height vs points</a></li>
-        <li><a href='query9.php'>Function to concat fist and last names</a></li>
-        <li><a href='query10.php'>Player Trade - stored Procedure</a></li>
-    </ol>
+    <div class="container">
+        <h1>NBA Stats Dashboard</h1>
+        <ol>
+            <li><a href="query1.php">Players with the highest average score</a></li>
+            <li><a href="query2.php">All players on the Lakers</a></li>
+            <li><a href="query3.php">All players that went to the same college</a></li>
+            <li><a href="query4.php">All players who did not go to college</a></li>
+            <li><a href="query5.php">Teams ranked by total average score</a></li>
+            <li><a href="query6.php">Top Colleges by points</a></li>
+            <li><a href="query7.php">Rebounds per position</a></li>
+            <li><a href="query8.php">Players height vs points</a></li>
+            <li><a href="query9.php">Function to concat first and last names</a></li>
+            <li><a href="query10.php">Player Trade - Stored Procedure</a></li>
+        </ol>
+    </div>
 </body>
 </html>
