@@ -1,19 +1,15 @@
 <?php
-// Database connection settings — replace with your actual RDS credentials
-$db_host = 'database-project.c960ywsie3ld.us-east-2.rds.amazonaws.com';
-$db_user = 'admin';            // Your RDS master username
-$db_pass = 'Doodle.101';    // Your RDS master password
-$db_name = 'nba_db';           // The database you imported your SQL into
+$db_conn = mysqli_connect(
+    getenv('DB_HOST'),
+    getenv('DB_USER'),
+    getenv('DB_PASS'),
+    getenv('DB_NAME')
+);
 
-// Connect to RDS MySQL
-$db_conn = @mysqli_connect($db_host, $db_user, $db_pass, $db_name);
-
-// Check connection
 if (!$db_conn) {
     die("<h2>Connection failed:</h2><p>" . mysqli_connect_error() . "</p>");
 }
 
-// SQL query to get top players by team
 $TopPlayers = '
     SELECT p.PlayerFName, p.PlayerLName, p.TeamName, p.Pic, s.Points
     FROM PLAYER p
@@ -28,7 +24,6 @@ $TopPlayers = '
     ORDER BY p.TeamName, s.Points DESC
 ';
 
-// Run query
 $result = mysqli_query($db_conn, $TopPlayers);
 
 if ($result) {
@@ -47,22 +42,70 @@ mysqli_close($db_conn);
 <head>
     <meta charset="utf-8">
     <title>Top NBA Players by Team</title>
-    <link href="nba/style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            margin-top: 50px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        aside {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        figure {
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        figcaption {
+            padding: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <h1>Players with the highest average points per team</h1>
+    <div class="container">
+        <h1>Players with the Highest Average Points per Team</h1>
         <aside>
             <?php foreach ($all_rows as $player): ?>
                 <figure>
                     <img src="<?= htmlspecialchars($player['Pic']) ?>" alt="Pic of <?= htmlspecialchars($player['PlayerFName']) ?>">
                     <figcaption>
-                        <?= htmlspecialchars($player['PlayerFName']) . ' ' . htmlspecialchars($player['PlayerLName']) ?> - <?= htmlspecialchars($player['TeamName']) ?><br>
-                        has an average score of <?= htmlspecialchars($player['Points']) ?> points
+                        <?= htmlspecialchars($player['PlayerFName']) ?> <?= htmlspecialchars($player['PlayerLName']) ?> - 
+                        <?= htmlspecialchars($player['TeamName']) ?><br>
+                        <strong><?= htmlspecialchars($player['Points']) ?> points</strong>
                     </figcaption>
                 </figure>
             <?php endforeach; ?>
         </aside>
-    </main>
+    </div>
 </body>
 </html>
