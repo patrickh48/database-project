@@ -6,13 +6,11 @@ $db_conn = mysqli_connect(
     getenv('DB_NAME')
 );
 
-// Check connection
 if (!$db_conn) {
     die("<h2>Connection failed:</h2><p>" . mysqli_connect_error() . "</p>");
 }
 
-// Query: Height vs Three Pointers Made
-$query = '
+$heightVsThreesQuery = '
     SELECT concatNames(p.PlayerFName, p.PlayerLName) AS Name, p.Height, s.ThreePointersMade
     FROM PLAYER p
     JOIN STATS s ON p.PlayerID = s.PlayerID
@@ -21,7 +19,7 @@ $query = '
     LIMIT 5
 ';
 
-$result = mysqli_query($db_conn, $query);
+$result = mysqli_query($db_conn, $heightVsThreesQuery);
 
 if ($result) {
     $all_rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -39,10 +37,50 @@ mysqli_close($db_conn);
 <head>
     <meta charset="utf-8">
     <title>Height vs Three Pointers Made</title>
-    <link href="nba/style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            margin-top: 50px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
-    <main>
+    <div class="container">
         <h1>Height vs Three Pointers Made</h1>
         <table>
             <tr>
@@ -58,6 +96,6 @@ mysqli_close($db_conn);
                 </tr>
             <?php endforeach; ?>
         </table>
-    </main>
+    </div>
 </body>
 </html>
