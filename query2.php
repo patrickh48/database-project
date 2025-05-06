@@ -6,19 +6,17 @@ $db_conn = mysqli_connect(
     getenv('DB_NAME')
 );
 
-// Check connection
 if (!$db_conn) {
     die("<h2>Connection failed:</h2><p>" . mysqli_connect_error() . "</p>");
 }
 
-// Query: All players on the Lakers
-$query = '
+$LakersPlayers = '
     SELECT p.PlayerFName, p.PlayerLName, p.TeamName, p.Pic
     FROM PLAYER p
     WHERE TeamName = "Lakers"
 ';
 
-$result = mysqli_query($db_conn, $query);
+$result = mysqli_query($db_conn, $LakersPlayers);
 
 if ($result) {
     $all_rows = mysqli_fetch_all($result, MYSQLI_ASSOC);
@@ -36,21 +34,69 @@ mysqli_close($db_conn);
 <head>
     <meta charset="utf-8">
     <title>Lakers Players</title>
-    <link href="nba/style.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            margin-top: 50px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        aside {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        figure {
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        figcaption {
+            padding: 15px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
 </head>
 <body>
-    <main>
+    <div class="container">
         <h1>All Players on the Lakers</h1>
         <aside>
             <?php foreach ($all_rows as $player): ?>
                 <figure>
                     <img src="<?= htmlspecialchars($player['Pic']) ?>" alt="Pic of <?= htmlspecialchars($player['PlayerFName']) ?>">
                     <figcaption>
-                        <?= htmlspecialchars($player['PlayerFName']) . ' ' . htmlspecialchars($player['PlayerLName']) ?> - <?= htmlspecialchars($player['TeamName']) ?>
+                        <?= htmlspecialchars($player['PlayerFName']) ?> <?= htmlspecialchars($player['PlayerLName']) ?> - 
+                        <?= htmlspecialchars($player['TeamName']) ?>
                     </figcaption>
                 </figure>
             <?php endforeach; ?>
         </aside>
-    </main>
+    </div>
 </body>
 </html>
