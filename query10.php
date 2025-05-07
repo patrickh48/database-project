@@ -10,35 +10,27 @@ if (!$db_conn) {
     die("<h2>Connection failed:</h2><p>" . mysqli_connect_error() . "</p>");
 }
 
-// Initial data: Player before trade
+// Get distinct team names for dropdown
+$teams_query = 'SELECT DISTINCT TeamName FROM PLAYER ORDER BY TeamName';
+$teams_result = mysqli_query($db_conn, $teams_query);
+$teams = $teams_result ? mysqli_fetch_all($teams_result, MYSQLI_ASSOC) : [];
+
+// Player info before trade
 $query1 = 'SELECT p.PlayerID, p.TeamName FROM PLAYER p WHERE p.PlayerID = 1';
 $result1 = mysqli_query($db_conn, $query1);
+$all_rows1 = $result1 ? mysqli_fetch_all($result1, MYSQLI_ASSOC) : [];
 
-if ($result1) {
-    $all_rows1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
-} else {
-    echo "<h2>Unable to fetch player data.</h2>";
-    exit;
-}
-
-// Initialize post-trade data array
+// Handle trade
 $all_rows3 = [];
-
 if (isset($_GET['submit']) && !empty($_GET['team'])) {
     $team = mysqli_real_escape_string($db_conn, $_GET['team']);
 
     $query2 = "CALL playerTrade(1, '$team')";
     $query3 = 'SELECT p.PlayerID, p.TeamName FROM PLAYER p WHERE p.PlayerID = 1';
 
-    $result2 = mysqli_query($db_conn, $query2);
+    mysqli_query($db_conn, $query2);
     $result3 = mysqli_query($db_conn, $query3);
-
-    if ($result3) {
-        $all_rows3 = mysqli_fetch_all($result3, MYSQLI_ASSOC);
-    } else {
-        echo "<h2>Error after trade attempt.</h2>";
-        exit;
-    }
+    $all_rows3 = $result3 ? mysqli_fetch_all($result3, MYSQLI_ASSOC) : [];
 }
 
 mysqli_close($db_conn);
@@ -75,7 +67,7 @@ mysqli_close($db_conn);
             margin-top: 20px;
             text-align: center;
         }
-        input[type="text"] {
+        select {
             padding: 8px;
             width: 200px;
             border-radius: 6px;
@@ -111,8 +103,13 @@ mysqli_close($db_conn);
     <div class="container">
         <h1>Trade Player (ID: 1)</h1>
         <form method="get">
-            <label for="team">New Team Name:</label>
-            <input type="text" name="team" id="team" required>
+            <label for="team">Select New Team:</label>
+            <select name="team" id="team" required>
+                <option value="" disabled selected>Select a team</option>
+                <?php foreach ($teams as $t): ?>
+                    <option value="<?= htmlspecialchars($t['TeamName']) ?>"><?= htmlspecialchars($t['TeamName']) ?></option>
+                <?php endforeach; ?>
+            </select>
             <button type="submit" name="submit">Submit Trade</button>
         </form>
 
