@@ -15,8 +15,8 @@ $teams_query = 'SELECT DISTINCT TeamName FROM PLAYER ORDER BY TeamName';
 $teams_result = mysqli_query($db_conn, $teams_query);
 $teams = $teams_result ? mysqli_fetch_all($teams_result, MYSQLI_ASSOC) : [];
 
-// Player info before trade
-$query1 = 'SELECT p.PlayerID, p.TeamName FROM PLAYER p WHERE p.PlayerID = 1';
+// Player info before trade (include name)
+$query1 = 'SELECT p.PlayerID, p.PlayerFName, p.PlayerLName, p.TeamName FROM PLAYER p WHERE p.PlayerID = 1';
 $result1 = mysqli_query($db_conn, $query1);
 $all_rows1 = $result1 ? mysqli_fetch_all($result1, MYSQLI_ASSOC) : [];
 
@@ -26,7 +26,7 @@ if (isset($_GET['submit']) && !empty($_GET['team'])) {
     $team = mysqli_real_escape_string($db_conn, $_GET['team']);
 
     $query2 = "CALL playerTrade(1, '$team')";
-    $query3 = 'SELECT p.PlayerID, p.TeamName FROM PLAYER p WHERE p.PlayerID = 1';
+    $query3 = 'SELECT p.PlayerID, p.PlayerFName, p.PlayerLName, p.TeamName FROM PLAYER p WHERE p.PlayerID = 1';
 
     mysqli_query($db_conn, $query2);
     $result3 = mysqli_query($db_conn, $query3);
@@ -115,10 +115,11 @@ mysqli_close($db_conn);
 
         <h2>Before Trade</h2>
         <table>
-            <tr><th>Player ID</th><th>Team</th></tr>
+            <tr><th>Player ID</th><th>Name</th><th>Team</th></tr>
             <?php foreach ($all_rows1 as $row): ?>
                 <tr>
                     <td><?= htmlspecialchars($row['PlayerID']) ?></td>
+                    <td><?= htmlspecialchars($row['PlayerFName'] . ' ' . $row['PlayerLName']) ?></td>
                     <td><?= htmlspecialchars($row['TeamName']) ?></td>
                 </tr>
             <?php endforeach; ?>
@@ -127,10 +128,11 @@ mysqli_close($db_conn);
         <?php if (!empty($all_rows3)): ?>
             <h2>After Trade</h2>
             <table>
-                <tr><th>Player ID</th><th>New Team</th></tr>
+                <tr><th>Player ID</th><th>Name</th><th>New Team</th></tr>
                 <?php foreach ($all_rows3 as $row): ?>
                     <tr>
                         <td><?= htmlspecialchars($row['PlayerID']) ?></td>
+                        <td><?= htmlspecialchars($row['PlayerFName'] . ' ' . $row['PlayerLName']) ?></td>
                         <td><?= htmlspecialchars($row['TeamName']) ?></td>
                     </tr>
                 <?php endforeach; ?>
