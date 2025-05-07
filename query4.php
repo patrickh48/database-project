@@ -52,6 +52,21 @@ mysqli_close($db_conn);
             max-width: 800px;
             width: 100%;
         }
+        a.back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        a.back-button:hover {
+            background-color: #5a6268;
+        }
         h1 {
             text-align: center;
             color: #333;
@@ -85,6 +100,7 @@ mysqli_close($db_conn);
 </head>
 <body>
     <div class="container">
+        <a href="index.html" class="back-button"><strong>← Back to Main</strong></a>
         <h1>Players Who Did Not Attend College</h1>
         <aside>
             <?php foreach ($all_rows as $player): ?>
