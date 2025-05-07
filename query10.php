@@ -11,39 +11,33 @@ if (!$db_conn) {
 }
 
 // Fetch all players for dropdown
-$player_query = 'SELECT PlayerID, PlayerFName, PlayerLName FROM PLAYER';
-$player_result = mysqli_query($db_conn, $player_query);
-$player_options = [];
+$player_result = mysqli_query($db_conn, 'SELECT PlayerID, PlayerFName, PlayerLName FROM PLAYER');
+$players = $player_result ? mysqli_fetch_all($player_result, MYSQLI_ASSOC) : [];
 
-if ($player_result) {
-    $player_options = mysqli_fetch_all($player_result, MYSQLI_ASSOC);
-}
+// Fetch all unique teams for dropdown
+$team_result = mysqli_query($db_conn, 'SELECT DISTINCT TeamName FROM PLAYER');
+$teams = $team_result ? mysqli_fetch_all($team_result, MYSQLI_ASSOC) : [];
 
-// Initialize player data
-$all_rows1 = [];
-$all_rows3 = [];
+// Init rows
+$before_trade = [];
+$after_trade = [];
 
 if (isset($_GET['submit']) && !empty($_GET['team']) && !empty($_GET['player'])) {
     $team = mysqli_real_escape_string($db_conn, $_GET['team']);
     $player_id = (int) $_GET['player'];
 
-    // Pre-trade info
+    // Get data before trade
     $query1 = "SELECT PlayerID, PlayerFName, PlayerLName, TeamName FROM PLAYER WHERE PlayerID = $player_id";
     $result1 = mysqli_query($db_conn, $query1);
-    if ($result1) {
-        $all_rows1 = mysqli_fetch_all($result1, MYSQLI_ASSOC);
-    }
+    $before_trade = $result1 ? mysqli_fetch_all($result1, MYSQLI_ASSOC) : [];
 
-    // Trade execution
-    $query2 = "CALL playerTrade($player_id, '$team')";
-    mysqli_query($db_conn, $query2);
+    // Call stored procedure
+    mysqli_query($db_conn, "CALL playerTrade($player_id, '$team')");
 
-    // Post-trade info
+    // Get data after trade
     $query3 = "SELECT PlayerID, PlayerFName, PlayerLName, TeamName FROM PLAYER WHERE PlayerID = $player_id";
     $result3 = mysqli_query($db_conn, $query3);
-    if ($result3) {
-        $all_rows3 = mysqli_fetch_all($result3, MYSQLI_ASSOC);
-    }
+    $after_trade = $result3 ? mysqli_fetch_all($result3, MYSQLI_ASSOC) : [];
 }
 
 mysqli_close($db_conn);
@@ -55,53 +49,44 @@ mysqli_close($db_conn);
     <meta charset="utf-8">
     <title>Player Trade</title>
     <link href="nba/style.css" rel="stylesheet">
-    <style>
-        table {
-            width: 60%;
-            border-collapse: collapse;
-            margin: 2em auto;
-        }
-        th, td {
-            border: 1px solid #333;
-            padding: 0.75em;
-            text-align: left; /* LEFT aligned */
-        }
-        form {
-            text-align: center;
-            margin-top: 2em;
-        }
-    </style>
 </head>
 <body>
     <main>
-        <h1 style="text-align:center;">Trade a Player</h1>
+        <h1>Trade a Player</h1>
 
         <form method="GET">
             <label for="player">Select Player:</label>
             <select name="player" id="player" required>
-                <?php foreach ($player_options as $player): ?>
-                    <option value="<?= $player['PlayerID'] ?>"
-                        <?= isset($_GET['player']) && $_GET['player'] == $player['PlayerID'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($player['PlayerFName'] . ' ' . $player['PlayerLName']) ?>
+                <option value="">-- Choose Player --</option>
+                <?php foreach ($players as $p): ?>
+                    <option value="<?= $p['PlayerID'] ?>" <?= (isset($_GET['player']) && $_GET['player'] == $p['PlayerID']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($p['PlayerFName'] . ' ' . $p['PlayerLName']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
 
-            <label for="team">New Team:</label>
-            <input type="text" name="team" id="team" required>
+            <label for="team">Select New Team:</label>
+            <select name="team" id="team" required>
+                <option value="">-- Choose Team --</option>
+                <?php foreach ($teams as $t): ?>
+                    <option value="<?= htmlspecialchars($t['TeamName']) ?>" <?= (isset($_GET['team']) && $_GET['team'] == $t['TeamName']) ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($t['TeamName']) ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
 
-            <button type="submit" name="submit">Trade Player</button>
+            <button type="submit" name="submit">Trade</button>
         </form>
 
-        <?php if (!empty($all_rows1)): ?>
-            <h2 style="text-align:center;">Before Trade</h2>
+        <?php if (!empty($before_trade)): ?>
+            <h2>Before Trade</h2>
             <table>
                 <tr>
                     <th>Player ID</th>
                     <th>Name</th>
                     <th>Team</th>
                 </tr>
-                <?php foreach ($all_rows1 as $row): ?>
+                <?php foreach ($before_trade as $row): ?>
                     <tr>
                         <td><?= htmlspecialchars($row['PlayerID']) ?></td>
                         <td><?= htmlspecialchars($row['PlayerFName'] . ' ' . $row['PlayerLName']) ?></td>
@@ -111,15 +96,15 @@ mysqli_close($db_conn);
             </table>
         <?php endif; ?>
 
-        <?php if (!empty($all_rows3)): ?>
-            <h2 style="text-align:center;">After Trade</h2>
+        <?php if (!empty($after_trade)): ?>
+            <h2>After Trade</h2>
             <table>
                 <tr>
                     <th>Player ID</th>
                     <th>Name</th>
                     <th>Team</th>
                 </tr>
-                <?php foreach ($all_rows3 as $row): ?>
+                <?php foreach ($after_trade as $row): ?>
                     <tr>
                         <td><?= htmlspecialchars($row['PlayerID']) ?></td>
                         <td><?= htmlspecialchars($row['PlayerFName'] . ' ' . $row['PlayerLName']) ?></td>
