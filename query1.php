@@ -74,6 +74,7 @@ mysqli_close($db_conn);
 
         a.back-button:hover {
             background-color: #5a6268;
+            transform: scale(1.05);
         }
         h1 {
             text-align: center;
