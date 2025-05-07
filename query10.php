@@ -123,4 +123,22 @@ mysqli_close($db_conn);
                 <tr>
                     <td><?= htmlspecialchars($row['PlayerID']) ?></td>
                     <td><?= htmlspecialchars($row['TeamName']) ?></td>
-                </tr
+                </tr>
+            <?php endforeach; ?>
+        </table>
+
+        <?php if (!empty($all_rows3)): ?>
+            <h2>After Trade</h2>
+            <table>
+                <tr><th>Player ID</th><th>New Team</th></tr>
+                <?php foreach ($all_rows3 as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['PlayerID']) ?></td>
+                        <td><?= htmlspecialchars($row['TeamName']) ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </table>
+        <?php endif; ?>
+    </div>
+</body>
+</html>
