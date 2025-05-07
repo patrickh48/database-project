@@ -91,8 +91,12 @@ mysqli_close($db_conn);
             border-collapse: collapse;
         }
         th, td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    vertical-align: middle;
+}
+
         }
         th {
             background-color: #f0f0f0;
