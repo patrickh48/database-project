@@ -6,12 +6,10 @@ $db_conn = mysqli_connect(
     getenv('DB_NAME')
 );
 
-// Check connection
 if (!$db_conn) {
     die("<h2>Connection failed:</h2><p>" . mysqli_connect_error() . "</p>");
 }
 
-// Query to use the concat function
 $query = '
     SELECT concatNames(p.PlayerFName, p.PlayerLName) AS Name
     FROM PLAYER p
@@ -35,12 +33,52 @@ mysqli_close($db_conn);
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Concatenated Player Names - Hawks</title>
-    <link href="nba/style.css" rel="stylesheet">
+    <title>Hawks Player Names</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9fafb;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+        .container {
+            background: white;
+            margin-top: 50px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        h1 {
+            text-align: center;
+            color: #222;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        tr:hover {
+            background-color: #f7f7f7;
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <h1>Concatenated Player Names (Hawks)</h1>
+    <div class="container">
+        <h1>Hawks Player Names</h1>
         <table>
             <tr>
                 <th>Name</th>
@@ -51,6 +89,6 @@ mysqli_close($db_conn);
                 </tr>
             <?php endforeach; ?>
         </table>
-    </main>
+    </div>
 </body>
 </html>
