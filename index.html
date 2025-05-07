@@ -11,18 +11,17 @@
             margin: 0;
             padding: 0;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start; /* moved left to allow content to be right */
             align-items: flex-start;
             min-height: 100vh;
         }
 
         .container {
-            background: **rgba(255, 255, 255, 0.9);
-            ** /* translucent white overlay */
-            margin-top: 60px;
-            padding: 80px;
+            background: rgba(255, 255, 255, 0.95); /* slightly less transparent */
+            margin: 60px 0 0 100px; /* moved right with left margin */
+            padding: 40px;
             border-radius: 12px;
-            box-shadow: 80 8px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             max-width: 600px;
             width: 100%;
         }
