@@ -53,11 +53,13 @@ mysqli_close($db_conn);
             background-size: cover;
         }
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             margin-top: 50px;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
             max-width: 800px;
             width: 100%;
         }
