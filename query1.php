@@ -53,7 +53,7 @@ mysqli_close($db_conn);
             background-size: cover;
         }
         .container {
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.65);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.4);
             margin-top: 50px;
