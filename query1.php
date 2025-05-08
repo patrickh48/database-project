@@ -45,7 +45,7 @@ mysqli_close($db_conn);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: url('https://png.pngtree.com/thumb_back/fh260/background/20230705/pngtree-3d-render-of-a-basketball-ball-in-an-indoor-court-image_3799313.jpg') no-repeat center center fixed
+            background: url('https://png.pngtree.com/thumb_back/fh260/background/20230705/pngtree-3d-render-of-a-basketball-ball-in-an-indoor-court-image_3799313.jpg') no-repeat center center fixed;
             margin: 0;
             padding: 0;
             display: flex;
