@@ -43,19 +43,22 @@ mysqli_close($db_conn);
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f4f9;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
+            background: url('https://png.pngtree.com/thumb_back/fh260/background/20230705/pngtree-3d-render-of-a-basketball-ball-in-an-indoor-court-image_3799313.jpg') no-repeat center center fixed;
+            background-size: cover;
         }
         .container {
-            background: white;
+            background: rgba(255, 255, 255, 0.45);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             margin-top: 50px;
             padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-            max-width: 1000px;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+            max-width: 800px;
             width: 100%;
         }
         a.back-button {
